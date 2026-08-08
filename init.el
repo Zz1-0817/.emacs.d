@@ -6,6 +6,9 @@
 (scroll-bar-mode -1)
 (electric-pair-mode t)
 (which-key-mode 1)
+(recentf-mode 1)
+(setq recentf-max-saved-items 100)
+
 (add-hook 'after-init-hook 'global-display-line-numbers-mode)
 (setq display-line-numbers-type 'relative)
 (setq make-backup-files nil)
@@ -43,4 +46,21 @@
 (use-package rust-ts-mode
   :ensure t
   :mode "\\.rs\\'"
+  :hook (rust-ts-mode . flymake-mode)
   )
+
+(use-package eglot
+  :ensure t
+  :defer t
+  :commands (eglot eglot-ensure)
+  ;; :hook ((rust-ts-mode python-mode) . eglot-ensure)
+  :config
+    (setq eglot-autoshutdown t)
+    (setq eglot-report-progress nil)
+    (add-hook 'eglot-managed-mode-hook
+              (lambda () (corfu-mode 1)))
+    )
+
+(use-package magit
+  :ensure t)
+
