@@ -9,6 +9,9 @@
 (recentf-mode 1)
 (setq recentf-max-saved-items 100)
 
+(load-theme 'modus-vivendi t)
+;; (load-theme 'modus-operandi t)
+
 (add-hook 'after-init-hook 'global-display-line-numbers-mode)
 (setq display-line-numbers-type 'relative)
 (setq make-backup-files nil)
@@ -40,14 +43,10 @@
   :ensure t
   :config
   (add-to-list 'completion-at-point-functions #'cape-dabbrev)
-  (add-to-list 'completion-at-point-functions #'cape-elisp-symbol)
+  (add-hook 'completion-at-point-functions #'cape-file)
   (add-to-list 'completion-at-point-functions #'cape-keyword))
 
-(use-package rust-ts-mode
-  :ensure t
-  :mode "\\.rs\\'"
-  :hook (rust-ts-mode . flymake-mode)
-  )
+
 
 (use-package eglot
   :ensure t
@@ -61,6 +60,20 @@
               (lambda () (corfu-mode 1)))
     )
 
+;; use typst-ts-mc-install-grammer to install treesitter
+(use-package typst-ts-mode
+  :ensure t
+  :custom
+  (typst-ts-math-script-display nil))
+
+(use-package rust-ts-mode
+  :ensure t
+  :mode "\\.rs\\'"
+  :hook (rust-ts-mode . flymake-mode)
+  )
+
 (use-package magit
   :ensure t)
 
+(when (display-graphic-p)
+  (set-face-attribute 'default nil :height 135))
